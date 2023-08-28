@@ -8,5 +8,17 @@
   </head>
   <body>
     <h1>Tasks</h1>
+    <div id="create">
+      <h2>Create a Task</h2>
+      <form action="create.php" method="post">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" required />
+        <label for="description">Description</label>
+        <textarea name="description" id="description" required></textarea>
+        <label for="due">Due Date</label>
+        <input type="date" name="due" id="due" required />
+        <input type="submit" value="Create" />
+      </form>
+    </div>
   </body>
 </html>
