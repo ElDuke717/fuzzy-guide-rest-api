@@ -1,6 +1,7 @@
 const date = new Date();
+console.log(date);
 
-document.getElementById("date").innerHTML = date.toDateString();
+document.getElementById("date").innerText = date.toLocaleString();
 
 let tasks;
 
@@ -9,7 +10,7 @@ let tasks;
 //     res.json();
 // }).then((data) => {
 //     tasks = data;
-    
+
 // }
 // ).catch((err) => {
 //     console.log(err);

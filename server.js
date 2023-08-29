@@ -24,6 +24,13 @@ app.use(cookieParser());
 // serve static files
 app.use(express.static(path.resolve(__dirname, "../assets")));
 
+// server index.html page when request to the root is made
+app.get('/', (req, res) => {
+    return res.sendFile(path.joint(__dirname, '/../views/index.html'));
+
+// Get all tasks
+app.get("/tasks", taskController.getAllTasks);
+
 // Get a task by id
 app.get("/tasks/:id", (req, res) => {
   const task = tasks.find((t) => t.id === parseInt(req.params.id));
