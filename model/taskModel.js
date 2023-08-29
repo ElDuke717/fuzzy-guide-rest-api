@@ -3,8 +3,9 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 
-const myURI = process.env.MONGODB_URI;
- 
+const myURI =
+  "mongodb+srv://njhuemmer:v2xrKzoAJvNEdJ@cluster0.r742kzh.mongodb.net/?retryWrites=true&w=majority";
+
 const URI = process.env.MONGODB_URI || my;
 URI;
 
@@ -24,7 +25,7 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  created_at : { type : Date, default: Date.now }
+  created_at: { type: Date, default: Date.now },
 });
 
 // Create a model using the schema
