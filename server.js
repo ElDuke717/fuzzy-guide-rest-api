@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 // Get all tasks
 app.get("/tasks", taskController.getAllTasks, (req, res) => {
   res.status.apply(201).json(res.locals.tasks);
-}
+});
 
 // Get a task by id
 app.get("/tasks/:id", (req, res) => {

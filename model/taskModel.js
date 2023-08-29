@@ -1,15 +1,20 @@
 require("dotenv").config();
-({ path: __dirname + "/.env" });
 
 const mongoose = require("mongoose");
 
 const myURI =
-  "mongodb+srv://njhuemmer:v2xrKzoAJvNEdJ@cluster0.r742kzh.mongodb.net/?retryWrites=true&w=majority";
+  "";
 
-const URI = process.env.MONGODB_URI || my;
-URI;
+const URI = process.env.MONGODB_URI || myURI;
 
-const mongoose = require("mongoose");
+mongoose
+  .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 // Define a schema for your tasks
 const taskSchema = new mongoose.Schema({
