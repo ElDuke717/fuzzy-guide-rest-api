@@ -5,6 +5,8 @@ const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
+const path = require("path");
+const cookieParser = require("cookie-parser");
 
 let tasks = []; // Simple in-memory data store
 
@@ -25,11 +27,14 @@ app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, "../assets")));
 
 // server index.html page when request to the root is made
-app.get('/', (req, res) => {
-    return res.sendFile(path.joint(__dirname, '/../views/index.html'));
+app.get("/", (req, res) => {
+  return res.sendFile(path.join(__dirname, "/views/index.html"));
+});
 
 // Get all tasks
-app.get("/tasks", taskController.getAllTasks);
+app.get("/tasks", taskController.getAllTasks, (req, res) => {
+  res.status.apply(201).json(res.locals.tasks);
+}
 
 // Get a task by id
 app.get("/tasks/:id", (req, res) => {
