@@ -8,6 +8,11 @@
   </head>
   <body>
     <h1>Tasks</h1>
+    <div id="date"></div>
+    <p>
+      This is a simple task manager application. It allows you to create, read,
+      update, and delete tasks.
+    </p>
     <div id="create">
       <h2>Create a Task</h2>
       <form action="create.php" method="post">
@@ -19,6 +24,8 @@
         <input type="date" name="due" id="due" required />
         <input type="submit" value="Create" />
       </form>
+      <div id="tasks"></div>
     </div>
+    <script src="/assets/js/index.js"></script>
   </body>
 </html>

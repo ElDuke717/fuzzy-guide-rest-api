@@ -8,10 +8,21 @@ app.use(bodyParser.json());
 
 let tasks = []; // Simple in-memory data store
 
+const taskController = require("./controllers/taskController");
+
 // Get all tasks
 app.get("/tasks", (req, res) => {
   res.json(tasks);
 });
+
+// Middleware to handle URLs
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+// invoke cookieParser
+app.use(cookieParser());
+
+// serve static files
+app.use(express.static(path.resolve(__dirname, "../assets")));
 
 // Get a task by id
 app.get("/tasks/:id", (req, res) => {

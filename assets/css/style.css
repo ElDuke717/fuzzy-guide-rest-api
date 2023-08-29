@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  h1 {
+    color: #333;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  li {
+    margin-bottom: 15px;
+  }
+
+  .source {
+    font-size: 0.9em;
+    font-style: italic;
+  }
