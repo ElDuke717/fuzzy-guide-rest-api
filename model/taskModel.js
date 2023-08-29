@@ -3,8 +3,7 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 
-const myURI =
-  "mongodb+srv://njhuemmer:v2xrKzoAJvNEdJ@cluster0.r742kzh.mongodb.net/?retryWrites=true&w=majority";
+const myURI = "";
 
 const URI = process.env.MONGODB_URI || my;
 URI;
