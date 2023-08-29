@@ -12,6 +12,11 @@ let tasks = []; // Simple in-memory data store
 
 const taskController = require("./controllers/taskController");
 
+// Get all tasks
+app.get("/tasks", (req, res) => {
+  res.json(tasks);
+});
+
 // Middleware to handle URLs
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -19,7 +24,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // serve static files
-app.use("/assets", express.static(path.resolve(__dirname, "../assets")));
+app.use(express.static(path.resolve(__dirname, "../assets")));
 
 // server index.html page when request to the root is made
 app.get("/", (req, res) => {
@@ -29,7 +34,7 @@ app.get("/", (req, res) => {
 // Get all tasks
 app.get("/tasks", taskController.getAllTasks, (req, res) => {
   res.status.apply(201).json(res.locals.tasks);
-});
+}
 
 // Get a task by id
 app.get("/tasks/:id", (req, res) => {

@@ -3,14 +3,13 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 
-const myURI = process.env.MONGODB_URI;
+const myURI =
+  "mongodb+srv://njhuemmer:v2xrKzoAJvNEdJ@cluster0.r742kzh.mongodb.net/?retryWrites=true&w=majority";
 
-const URI = process.env.MONGODB_URI || myURI;
+const URI = process.env.MONGODB_URI || my;
+URI;
 
-// Check to see if we are connected to the database
-mongoose.connection.on("connected", () => {
-  console.log("Mongoose is connected");
-});
+const mongoose = require("mongoose");
 
 // Define a schema for your tasks
 const taskSchema = new mongoose.Schema({
