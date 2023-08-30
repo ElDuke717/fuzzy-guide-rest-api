@@ -17,23 +17,24 @@ app.use(express.json());
 app.use(cookieParser());
 
 // serve static files
-app.use(express.static(path.resolve(__dirname, "/assets")));
-
-console.log("before get /");
+app.use("/assets", express.static(path.resolve(__dirname, "../assets")));
 
 // server index.html page when request to the root is made
 app.get("/", (req, res) => {
   console.log("get /");
-  return res.sendFile(path.join(__dirname + "/views/index.html"));
+  return res.sendFile(path.join(__dirname + "/../views/index.html"));
 });
 
-console.log("before get /tasks");
+// serve the tasks view
+app.get("/tasks", (req, res) => {
+  return res.sendFile(path.join(__dirname + "/../views/tasks.html"));
+});
 
-// // Get all tasks
-// app.get("/tasks", taskController.getAllTasks, (req, res) => {
-//   console.log("get all tasks");
-//   res.status(200).json(res.locals.tasks);
-// });
+// get method on entries to see all blog entries
+app.get("/tasks", taskController.getAllTasks, (req, res) => {
+  // get all entries in the database
+  return res.status(200).json(res.locals.tasks);
+});
 
 // // Get a task by id
 // app.get("/tasks/:id", (req, res) => {

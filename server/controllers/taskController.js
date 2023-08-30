@@ -1,4 +1,4 @@
-const Task = require("../model/taskModel");
+const Task = require("../../model/taskModel");
 
 const taskController = {};
 
@@ -47,6 +47,7 @@ taskController.getTask = async (req, res, next) => {
 
 // update a task by id
 taskController.updateTask = async (req, res, next) => {
+  console.log("taskController.updateTask");
   try {
     const task = await Task.findById(req.params.id);
     task.title = req.body.title || task.title;
@@ -70,3 +71,5 @@ taskController.deleteTask = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports = taskController;
