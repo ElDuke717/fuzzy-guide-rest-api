@@ -35,6 +35,27 @@ fetch("http://localhost:3001/tasks")
       taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
       taskDiv.appendChild(taskDueDate);
 
+      // add an update button
+      const updateButton = document.createElement("button");
+      updateButton.textContent = "Update Task";
+      updateButton.className = "update-button";
+      updateButton.setAttribute("data-id", task._id);
+      taskDiv.appendChild(updateButton);
+
+      // Append a form to update the task
+      const updateForm = document.createElement("form");
+      updateForm.className = "update-form";
+      updateForm.setAttribute("data-id", task._id);
+      updateForm.innerHTML = `
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="${task.title}" required>
+            <label for="description">Description</label>
+            <input type="text" name="description" id="description" value="${task.description}" required>
+            <label for="due">Due Date</label>
+            <input type="date" name="due" id="due" value="${task.due}" required>
+            <button type="submit">Update Task</button>
+        `;
+
       // Append delete button to the task div
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete Task";
@@ -102,19 +123,24 @@ taskForm.addEventListener("submit", async (event) => {
 
 // Delete a task
 document.addEventListener("click", async (event) => {
+  // Check if the clicked element has the class "delete-button"
   if (event.target.classList.contains("delete-button")) {
     const taskId = event.target.getAttribute("data-id");
     const taskDiv = event.target.parentElement;
+
+    console.log("taskId", taskId);
+    console.log("taskDiv", taskDiv);
 
     try {
       const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
         method: "DELETE",
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      } else {
+      if (response.ok) {
+        // If the task was successfully deleted, hide the taskDiv
         taskDiv.style.display = "none";
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
       console.error("Error:", error);

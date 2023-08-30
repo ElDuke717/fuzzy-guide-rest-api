@@ -45,15 +45,23 @@ app.get("/tasklist", (req, res) => {
 
 // get all the tasks from the database
 app.get("/tasks", taskController.getAllTasks, (req, res) => {
-  return res.status(200).json(res.locals.tasks)
+  return res.status(200).json(res.locals.tasks);
 });
 
 // post a new task
-app.post(
-  "/tasks",
-  taskController.createTask,
-  (req, res) => res.status(200).json(res.locals.task)
-);
+app.post("/tasks", taskController.createTask, (req, res) => {
+  return res.status(200).json(res.locals.task);
+});
+
+// update a task
+app.put("/tasks/:id", taskController.updateTask, (req, res) => {
+  return res.status(200).json(res.locals.task);
+});
+
+// delete a task
+app.delete("/tasks/:id", taskController.deleteTask, (req, res) => {
+  return res.status(200).json(res.locals.task);
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}/`);
