@@ -1,6 +1,7 @@
 const date = new Date();
 console.log(date);
 
+// Add the current date to the page
 document.getElementById("date").innerText = date.toLocaleString();
 
 let tasks;

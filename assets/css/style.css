@@ -85,3 +85,16 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #0056b3;
 }
+
+.logo {
+  height: 50px;
+  max-width: 50px;
+  margin: 20px;
+}
+
+.headline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
