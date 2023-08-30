@@ -8,14 +8,7 @@ app.use(bodyParser.json());
 const path = require("path");
 const cookieParser = require("cookie-parser");
 
-let tasks = []; // Simple in-memory data store
-
 const taskController = require("./controllers/taskController");
-
-// Get all tasks
-app.get("/tasks", (req, res) => {
-  res.json(tasks);
-});
 
 // Middleware to handle URLs
 app.use(express.urlencoded({ extended: true }));
@@ -24,52 +17,58 @@ app.use(express.json());
 app.use(cookieParser());
 
 // serve static files
-app.use(express.static(path.resolve(__dirname, "../assets")));
+app.use(express.static(path.resolve(__dirname, "/assets")));
+
+console.log("before get /");
 
 // server index.html page when request to the root is made
 app.get("/", (req, res) => {
-  return res.sendFile(path.join(__dirname, "/views/index.html"));
+  console.log("get /");
+  return res.sendFile(path.join(__dirname + "/views/index.html"));
 });
 
-// Get all tasks
-app.get("/tasks", taskController.getAllTasks, (req, res) => {
-  res.status.apply(201).json(res.locals.tasks);
-});
+console.log("before get /tasks");
 
-// Get a task by id
-app.get("/tasks/:id", (req, res) => {
-  const task = tasks.find((t) => t.id === parseInt(req.params.id));
-  if (!task) return res.status(404).send("Task not found.");
-  res.json(task);
-});
+// // Get all tasks
+// app.get("/tasks", taskController.getAllTasks, (req, res) => {
+//   console.log("get all tasks");
+//   res.status(200).json(res.locals.tasks);
+// });
 
-// Post a new task
-app.post("/tasks", (req, res) => {
-  const task = {
-    id: tasks.length + 1,
-    description: req.body.description,
-  };
-  tasks.push(task);
-  res.status(201).json(task);
-});
+// // Get a task by id
+// app.get("/tasks/:id", (req, res) => {
+//   const task = tasks.find((t) => t.id === parseInt(req.params.id));
+//   if (!task) return res.status(404).send("Task not found.");
+//   res.json(task);
+// });
 
-// Update a task by id
-app.put("/tasks/:id", (req, res) => {
-  const task = tasks.find((t) => t.id === parseInt(req.params.id));
-  if (!task) return res.status(404).send("Task not found.");
+// // Post a new task
+// app.post("/tasks", (req, res) => {
+//   const task = {
+//     id: tasks.length + 1,
+//     description: req.body.description,
+//   };
+//   tasks.push(task);
+//   res.status(201).json(task);
+// });
 
-  task.description = req.body.description || task.description;
-  res.json(task);
-});
+// // Update a task by id
+// app.put("/tasks/:id", (req, res) => {
+//   const task = tasks.find((t) => t.id === parseInt(req.params.id));
+//   if (!task) return res.status(404).send("Task not found.");
 
-// Delete a task by id
-app.delete("/tasks/:id", (req, res) => {
-  const taskIndex = tasks.findIndex((t) => t.id === parseInt(req.params.id));
-  if (taskIndex === -1) return res.status(404).send("Task not found.");
+//   task.description = req.body.description || task.description;
+//   res.json(task);
+// });
 
-  const removedTask = tasks.splice(taskIndex, 1);
-  res.json(removedTask[0]);
-});
+// // Delete a task by id
+// app.delete("/tasks/:id", (req, res) => {
+//   const taskIndex = tasks.findIndex((t) => t.id === parseInt(req.params.id));
+//   if (taskIndex === -1) return res.status(404).send("Task not found.");
+
+//   const removedTask = tasks.splice(taskIndex, 1);
+//   res.json(removedTask[0]);
+// });
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}/`);

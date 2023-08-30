@@ -6,6 +6,7 @@ const taskController = {};
 
 // create a new task
 taskController.createTask = async (req, res, next) => {
+  console.log("create task");
   try {
     const task = await Task.create(req.body);
     res.locals.task = task;
@@ -17,12 +18,19 @@ taskController.createTask = async (req, res, next) => {
 
 // Get all tasks
 taskController.getAllTasks = async (req, res, next) => {
+  console.log("get all tasks");
   try {
     const tasks = await Task.find({});
     res.locals.tasks = tasks;
     next();
   } catch (err) {
-    next(err);
+    next({
+      log: `taskController.getAllTasks: ERROR: ${err}`,
+      status: err.status || 500,
+      message: {
+        err: "error occurred in the getAllTasks method on taskController.",
+      },
+    });
   }
 };
 
@@ -54,12 +62,11 @@ taskController.updateTask = async (req, res, next) => {
 
 // delete a task by id
 taskController.deleteTask = async (req, res, next) => {
-    try {
-        const task = await Task.findByIdAndDelete(req.params.id);
-        res.locals.task = task;
-        next();
-    } catch (err) {
-        next(err);
-    }
-    };
-
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+    res.locals.task = task;
+    next();
+  } catch (err) {
+    next(err);
+  }
+};

@@ -3,7 +3,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 
 const myURI =
-  "";
+  
 
 const URI = process.env.MONGODB_URI || myURI;
 
