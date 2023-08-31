@@ -1,8 +1,7 @@
 const date = new Date();
-console.log(date);
 
 // Add the current date to the page
-document.getElementById("date").innerText = date.toLocaleString();
+document.getElementById("date").innerText = date.toLocaleDateString();
 
 // Declare tasks variable to hold all the tasks on the server
 let tasks;
@@ -11,7 +10,7 @@ let tasks;
 fetch("http://localhost:3001/tasks")
   .then((res) => res.json())
   .then((data) => {
-    console.log("data", data);
+
     tasks = data;
     // Loop through the tasks and post them to the task page
     tasks.forEach((task) => {
@@ -125,27 +124,37 @@ taskForm.addEventListener("submit", async (event) => {
 
 // Delete a task
 document.addEventListener("click", async (event) => {
-  // Check if the clicked element has the class "delete-button"
   if (event.target.classList.contains("delete-button")) {
-    const taskId = event.target.getAttribute("data-id");
-    const taskDiv = event.target.parentElement;
+    const confirmDelete = confirm("Are you sure you want to delete this task?");
 
-    console.log("taskId", taskId);
-    console.log("taskDiv", taskDiv);
+    if (confirmDelete) {
+      const taskId = event.target.getAttribute("data-id");
 
-    try {
-      const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
-        method: "DELETE",
-      });
+      try {
+        const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+          method: "DELETE",
+        });
 
-      if (response.ok) {
-        // If the task was successfully deleted, hide the taskDiv
-        taskDiv.style.display = "none";
-      } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.ok) {
+          // Display the deletion message
+          const messageElement = document.getElementById("message");
+          messageElement.style.opacity = 1;
+
+          // Hide the message with fade-out animation after 1 second
+          setTimeout(() => {
+            messageElement.style.opacity = 0;
+          }, 1000);
+
+          // Hide the taskDiv after deletion with fade-out animation
+          const taskDiv = event.target.parentElement;
+          // Remove the task from the page
+          taskDiv.style.display = "none";
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
     }
   }
 });
@@ -154,9 +163,9 @@ document.addEventListener("click", async (event) => {
 document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("update-button")) {
     // Get the task ID from the button's data-id attribute
-    console.log("update button clicked");
+  
     const taskId = event.target.getAttribute("data-id");
-    console.log("taskId", taskId);
+ 
     // Find the update form for the clicked task
     const updateForm = document.querySelector(
       `.update-form[data-id="${taskId}"]`
@@ -169,38 +178,37 @@ document.addEventListener("click", async (event) => {
 
 // Handle the form submission for updating a task
 document.addEventListener("submit", async (event) => {
-    if (event.target.classList.contains("update-form")) {
-      event.preventDefault();
-  
-      // Get the task ID from the form's data-id attribute
-      const taskId = event.target.getAttribute("data-id");
-      
-      // Get the updated task data from the form inputs
-      const formData = new FormData(event.target);
-      const updatedTask = {
-        title: formData.get("title"),
-        description: formData.get("description"),
-        due: formData.get("due"),
-      };
-  
-      try {
-        const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedTask),
-        });
-  
-        if (response.ok) {
-          // Refresh the page after successful update
-          location.reload();
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-      } catch (error) {
-        console.error("Error:", error);
+  if (event.target.classList.contains("update-form")) {
+    event.preventDefault();
+
+    // Get the task ID from the form's data-id attribute
+    const taskId = event.target.getAttribute("data-id");
+
+    // Get the updated task data from the form inputs
+    const formData = new FormData(event.target);
+    const updatedTask = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      due: formData.get("due"),
+    };
+
+    try {
+      const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (response.ok) {
+        // Refresh the page after successful update
+        location.reload();
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+    } catch (error) {
+      console.error("Error:", error);
     }
-  });
-  
+  }
+});
