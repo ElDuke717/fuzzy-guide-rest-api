@@ -42,19 +42,21 @@ fetch("http://localhost:3001/tasks")
       updateButton.setAttribute("data-id", task._id);
       taskDiv.appendChild(updateButton);
 
-      // Append a form to update the task
+      // Append the update form for this task
       const updateForm = document.createElement("form");
       updateForm.className = "update-form";
       updateForm.setAttribute("data-id", task._id);
+      updateForm.style.display = "none"; // Initially hide the form
       updateForm.innerHTML = `
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title" value="${task.title}" required>
-            <label for="description">Description</label>
-            <input type="text" name="description" id="description" value="${task.description}" required>
-            <label for="due">Due Date</label>
-            <input type="date" name="due" id="due" value="${task.due}" required>
-            <button type="submit">Update Task</button>
-        `;
+  <label for="title">Title</label>
+  <input type="text" name="title" id="title" value="${task.title}" required>
+  <label for="description">Description</label>
+  <input type="text" name="description" id="description" value="${task.description}" required>
+  <label for="due">Due Date</label>
+  <input type="date" name="due" id="due" value="${task.due}" required>
+  <button type="submit">Update Task</button>
+`;
+      taskDiv.appendChild(updateForm);
 
       // Append delete button to the task div
       const deleteButton = document.createElement("button");
@@ -149,13 +151,12 @@ document.addEventListener("click", async (event) => {
 });
 
 // Update a task
-// Update a task
 document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("update-button")) {
     // Get the task ID from the button's data-id attribute
     console.log("update button clicked");
     const taskId = event.target.getAttribute("data-id");
-
+    console.log("taskId", taskId);
     // Find the update form for the clicked task
     const updateForm = document.querySelector(
       `.update-form[data-id="${taskId}"]`
@@ -165,3 +166,41 @@ document.addEventListener("click", async (event) => {
     updateForm.style.display = "block";
   }
 });
+
+// Handle the form submission for updating a task
+document.addEventListener("submit", async (event) => {
+    if (event.target.classList.contains("update-form")) {
+      event.preventDefault();
+  
+      // Get the task ID from the form's data-id attribute
+      const taskId = event.target.getAttribute("data-id");
+      
+      // Get the updated task data from the form inputs
+      const formData = new FormData(event.target);
+      const updatedTask = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        due: formData.get("due"),
+      };
+  
+      try {
+        const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTask),
+        });
+  
+        if (response.ok) {
+          // Refresh the page after successful update
+          location.reload();
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  });
+  
