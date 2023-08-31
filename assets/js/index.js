@@ -147,3 +147,21 @@ document.addEventListener("click", async (event) => {
     }
   }
 });
+
+// Update a task
+// Update a task
+document.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("update-button")) {
+    // Get the task ID from the button's data-id attribute
+    console.log("update button clicked");
+    const taskId = event.target.getAttribute("data-id");
+
+    // Find the update form for the clicked task
+    const updateForm = document.querySelector(
+      `.update-form[data-id="${taskId}"]`
+    );
+
+    // Display the update form
+    updateForm.style.display = "block";
+  }
+});
