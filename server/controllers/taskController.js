@@ -18,7 +18,6 @@ taskController.createTask = async (req, res, next) => {
 
 // Get all tasks
 taskController.getAllTasks = async (req, res, next) => {
-  console.log("get all tasks");
   try {
     const tasks = await Task.find({});
     res.locals.tasks = tasks;

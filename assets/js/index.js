@@ -10,7 +10,6 @@ let tasks;
 fetch("http://localhost:3001/tasks")
   .then((res) => res.json())
   .then((data) => {
-
     tasks = data;
     // Loop through the tasks and post them to the task page
     tasks.forEach((task) => {
@@ -53,7 +52,7 @@ fetch("http://localhost:3001/tasks")
   <input type="text" name="description" id="description" value="${task.description}" required>
   <label for="due">Due Date</label>
   <input type="date" name="due" id="due" value="${task.due}" required>
-  <button type="submit">Update Task</button>
+  <button class="update-form-button" type="submit">Update Task</button>
 `;
       taskDiv.appendChild(updateForm);
 
@@ -163,13 +162,18 @@ document.addEventListener("click", async (event) => {
 document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("update-button")) {
     // Get the task ID from the button's data-id attribute
-  
+
     const taskId = event.target.getAttribute("data-id");
- 
+
     // Find the update form for the clicked task
     const updateForm = document.querySelector(
       `.update-form[data-id="${taskId}"]`
     );
+
+    // Hide the "Update Task" and "Delete Task" buttons
+    event.target.style.display = "none";
+    const deleteButton = event.target.nextElementSibling;
+    deleteButton.style.display = "none";
 
     // Display the update form
     updateForm.style.display = "block";

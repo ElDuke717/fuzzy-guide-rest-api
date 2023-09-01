@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tasks</title>
     <link type="text/css" href="/assets/css/style.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="/assets/img/tasks-logo.png" />
+    <link rel="icon" type="image/png" href="/assets/img/tasks-logo2.png" />
   </head>
   <body>
     <div class="headline">
@@ -17,10 +17,11 @@
       This is a simple task manager application. It allows you to create, read,
       update, and delete tasks.
     </p>
+    <div class="horizontal-bar"></div>
     <div id="create">
       <h2>Create a Task</h2>
       <form id="task-form" method="post">
-        <label for="title">Title</label>
+        <label for="title">Task Title</label>
         <input type="text" name="title" id="title" required />
         <label for="description">Description</label>
         <textarea name="description" id="description" required></textarea>
@@ -29,8 +30,8 @@
         <input type="submit" value="Create" />
       </form>
       <div id="message" class="message">Task deleted successfully!</div>
-
-
+      <div class="horizontal-bar"></div>
+      <h1>Tasks</h1>
       <div id="task-list"></div>
     </div>
     <script src="assets/js/index.js"></script>
