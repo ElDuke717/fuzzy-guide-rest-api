@@ -14,7 +14,7 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-// Define a schema for your tasks
+// Define a schema for the tasks
 const taskSchema = new mongoose.Schema({
   title: {
     type: String,
