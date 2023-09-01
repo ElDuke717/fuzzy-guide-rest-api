@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link type="text/css" href="/assets/css/style.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="/assets/img/tasks-logo2.png" />
-
     <title>Task App</title>
   </head>
   <body>
@@ -14,6 +13,41 @@
       <h1>Tasks</h1>
     </div>
     <div id="date"></div>
-    <p>This is a task app. Sign-In Here</p>
+    <p>This is a task app. Sign in or sign-up.</p>
+
+    <!-- Sign-In Form -->
+    <form id="signin-form">
+      <label for="signin-email">Email:</label>
+      <input type="email" id="signin-email" name="signin-email" required />
+      <label for="signin-password">Password:</label>
+      <input
+        type="password"
+        id="signin-password"
+        name="signin-password"
+        required
+      />
+      <button type="submit">Sign In</button>
+    </form>
+
+    <!-- Sign-Up Form -->
+    <form id="signup-form">
+      <label for="signup-email">Email:</label>
+      <input type="email" id="signup-email" name="signup-email" required />
+      <label for="signup-password">Password:</label>
+      <input
+        type="password"
+        id="signup-password"
+        name="signup-password"
+        required
+      />
+      <label for="signup-confirm-password">Confirm Password:</label>
+      <input
+        type="password"
+        id="signup-confirm-password"
+        name="signup-confirm-password"
+        required
+      />
+      <button type="submit">Sign Up</button>
+    </form>
   </body>
 </html>

@@ -202,3 +202,56 @@ input[type="submit"]:hover {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
+
+/* Add these styles for sign-in and sign-up forms */
+form#signin-form,
+form#signup-form {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: var(--color-gray-1000);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form#signin-form label,
+form#signup-form label {
+  color: var(--color-gray-300);
+  margin-bottom: 5px;
+}
+
+form#signin-form input[type="email"],
+form#signin-form input[type="password"],
+form#signup-form input[type="email"],
+form#signup-form input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form#signin-form button,
+form#signup-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-button);
+  color: var(--color-button-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form#signin-form button:hover,
+form#signup-form button:hover {
+  background-color: var(--color-button-hover);
+}
+
+/* Adjusting font color for forms */
+form#signin-form label,
+form#signup-form label {
+  color: var(--color-gray-200);
+}
