@@ -169,7 +169,8 @@ input[type="submit"]:hover {
 }
 
 .task button.update-button,
-.task button.update-form-button {
+.task button.update-form-button,
+.task button.cancel-button {
   background-color: var(--color-button);
   color: white;
   border: none;
@@ -180,7 +181,8 @@ input[type="submit"]:hover {
 }
 
 .task button.update-button:hover,
-.task button.update-form-button:hover {
+.task button.update-form-button:hover,
+.task button.cancel-button:hover {
   background-color: var(--color-button-hover);
 }
 

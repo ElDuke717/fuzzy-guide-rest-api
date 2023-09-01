@@ -53,8 +53,17 @@ fetch("http://localhost:3001/tasks")
   <label for="due">Due Date</label>
   <input type="date" name="due" id="due" value="${task.due}" required>
   <button class="update-form-button" type="submit">Update Task</button>
+  <button class="cancel-button" type="button">Cancel</button>
 `;
       taskDiv.appendChild(updateForm);
+      // Find the Cancel button inside the update form
+const cancelButton = updateForm.querySelector(".cancel-button");
+
+// Add an event listener to hide the form and show the Update button when Cancel is clicked
+cancelButton.addEventListener("click", () => {
+  updateForm.style.display = "none"; // Hide the form
+  updateButton.style.display = "block"; // Show the Update button
+});
 
       // Append delete button to the task div
       const deleteButton = document.createElement("button");
