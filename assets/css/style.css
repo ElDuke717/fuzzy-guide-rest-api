@@ -169,7 +169,7 @@ input[type="submit"] {
   width: 100%;
   max-width: 300px;
   padding: 10px;
-  background-color: var(--color-button);
+  background-color: var(--color-secondary-300);
   color: white;
   border: none;
   border-radius: 4px;
@@ -177,7 +177,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-  background-color: var(--color-button-hover);
+  background-color: var(--color-secondary-100);
 }
 
 .logo {
@@ -202,7 +202,7 @@ input[type="submit"]:hover {
 
 /* Styles for task elements */
 .task {
-  background-color: var(--color-gray-1000);
+  background-color: var(--color-neutral-900);
   border: 1px solid #ddd;
   padding: 15px;
   margin-bottom: 20px;
@@ -222,7 +222,7 @@ input[type="submit"]:hover {
 }
 
 .task button.delete-button {
-  background-color: var(--color-tertiary);
+  background-color: var(--color-secondary-red-400);
   color: white;
   border: none;
   border-radius: 4px;
@@ -231,13 +231,13 @@ input[type="submit"]:hover {
 }
 
 .task button.delete-button:hover {
-  background-color: #c82333;
+  background-color: var(--color-secondary-red-200);
 }
 
 .task button.update-button,
 .task button.update-form-button,
 .task button.cancel-button {
-  background-color: var(--color-button);
+  background-color: var(--color-secondary-300);
   color: white;
   border: none;
   border-radius: 4px;
@@ -249,7 +249,7 @@ input[type="submit"]:hover {
 .task button.update-button:hover,
 .task button.update-form-button:hover,
 .task button.cancel-button:hover {
-  background-color: var(--color-button-hover);
+  background-color: var(--color-secondary-100);
 }
 
 #task-list {
@@ -276,7 +276,7 @@ form#signup-form {
   max-width: 500px;
   margin: 20px auto;
   padding: 20px;
-  background-color: var(--color-gray-1000);
+  background-color: var(--color-neutral-900);
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -295,7 +295,7 @@ form#signup-form input[type="password"] {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-gray-700);
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -304,7 +304,7 @@ form#signin-form button,
 form#signup-form button {
   width: 100%;
   padding: 10px;
-  background-color: var(--color-button);
+  background-color: var(--color-secondary-300);
   color: var(--color-button-text);
   border: none;
   border-radius: 4px;
@@ -313,11 +313,29 @@ form#signup-form button {
 
 form#signin-form button:hover,
 form#signup-form button:hover {
-  background-color: var(--color-button-hover);
+  background-color: var(--color-secondary-100);
 }
 
 /* Adjusting font color for forms */
 form#signin-form label,
 form#signup-form label {
-  color: var(--color-gray-200);
+  color: var(--color-neutral-50);
+}
+
+.headline-sign-in {
+  border-radius: 5px;
+  background-image: linear-gradient(
+    0deg,
+    hsl(184deg 80% 74%) 0%,
+    hsl(185deg 82% 78%) 10%,
+    hsl(185deg 83% 83%) 20%,
+    hsl(185deg 86% 87%) 30%,
+    hsl(186deg 90% 90%) 40%,
+    hsl(186deg 100% 94%) 50%,
+    hsl(186deg 100% 94%) 60%,
+    hsl(186deg 100% 94%) 70%,
+    hsl(186deg 100% 94%) 80%,
+    hsl(186deg 100% 94%) 90%,
+    hsl(186deg 100% 94%) 100%
+  );
 }
