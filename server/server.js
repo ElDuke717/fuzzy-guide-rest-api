@@ -5,6 +5,12 @@ const LocalStrategy = require("passport-local").Strategy; // Import LocalStrateg
 const User = require("../model/userModel"); // Import your User model
 require("dotenv").config();
 
+const flash = require("connect-flash");
+
+console.log("user's model", User);
+
+const bcrypt = require("bcrypt");
+
 const secretKey = process.env.SECRET_KEY;
 
 const app = express();
@@ -26,9 +32,12 @@ app.use(bodyParser.json());
 const path = require("path");
 const cookieParser = require("cookie-parser");
 
+// use the flash middleware
+app.use(flash());
+
 // Configure passport.js to use the local strategy
 passport.use(
-  new LocalStrategy((username, password, done) => {
+  new LocalStrategy({ passReqToCallback: true }, (username, password, done) => {
     User.findOne({ email: username }, (err, user) => {
       if (err) return done(err);
       if (!user) return done(null, false, { message: "Incorrect email." });
@@ -63,23 +72,21 @@ passport.deserializeUser((id, done) => {
 });
 
 app.post(
-  "/login",
+  "/",
   passport.authenticate("local", {
     successRedirect: "/tasklist",
-    failureRedirect: "/login",
+    failureRedirect: "/",
     failureFlash: true,
   })
 );
 
 // User registration route
-app.post("/signup", (req, res) => {
-  const { email, password } = req.body;
+app.post("/signup", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  // Hash the password before saving
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      return res.status(500).json({ error: "Error hashing password" });
-    }
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user with the hashed password
     const newUser = new User({
@@ -88,15 +95,13 @@ app.post("/signup", (req, res) => {
     });
 
     // Save the user to the database
-    newUser.save((err, savedUser) => {
-      if (err) {
-        return res.status(500).json({ error: "Error saving user" });
-      }
+    await newUser.save();
 
-      // User registration successful
-      return res.status(201).json({ message: "User registered successfully" });
-    });
-  });
+    // User registration successful
+    return res.status(201).json({ message: "User registered successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Error saving user" });
+  }
 });
 
 const taskController = require("./controllers/taskController");
