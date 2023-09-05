@@ -1,5 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy; // Import LocalStrategy
+const User = require("../model/userModel"); // Import your User model
+require("dotenv").config();
+
+const secretKey = process.env.SECRET_KEY;
 
 const app = express();
 const PORT = 3001;
@@ -20,6 +26,79 @@ app.use(bodyParser.json());
 const path = require("path");
 const cookieParser = require("cookie-parser");
 
+// Configure passport.js to use the local strategy
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ email: username }, (err, user) => {
+      if (err) return done(err);
+      if (!user) return done(null, false, { message: "Incorrect email." });
+      if (!user.validatePassword(password)) {
+        return done(null, false, { message: "Incorrect password." });
+      }
+      return done(null, user);
+    });
+  })
+);
+// passport.js configuration
+app.use(
+  require("express-session")({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Serialize and Deserialize User
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/tasklist",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })
+);
+
+// User registration route
+app.post("/signup", (req, res) => {
+  const { email, password } = req.body;
+
+  // Hash the password before saving
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({ error: "Error hashing password" });
+    }
+
+    // Create a new user with the hashed password
+    const newUser = new User({
+      email: email,
+      password: hashedPassword,
+    });
+
+    // Save the user to the database
+    newUser.save((err, savedUser) => {
+      if (err) {
+        return res.status(500).json({ error: "Error saving user" });
+      }
+
+      // User registration successful
+      return res.status(201).json({ message: "User registered successfully" });
+    });
+  });
+});
+
 const taskController = require("./controllers/taskController");
 
 // Middleware to handle URLs
@@ -38,8 +117,15 @@ app.get("/", (req, res) => {
   return res.sendFile(path.join(__dirname + "/../views/index.html"));
 });
 
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/"); // Redirect to login if not authenticated
+};
+
 // serve the tasks view
-app.get("/tasklist", (req, res) => {
+app.get("/tasklist", ensureAuthenticated, (req, res) => {
   return res.sendFile(path.join(__dirname + "/../views/tasklist.html"));
 });
 

@@ -57,13 +57,13 @@ fetch("http://localhost:3001/tasks")
 `;
       taskDiv.appendChild(updateForm);
       // Find the Cancel button inside the update form
-const cancelButton = updateForm.querySelector(".cancel-button");
+      const cancelButton = updateForm.querySelector(".cancel-button");
 
-// Add an event listener to hide the form and show the Update button when Cancel is clicked
-cancelButton.addEventListener("click", () => {
-  updateForm.style.display = "none"; // Hide the form
-  updateButton.style.display = "block"; // Show the Update button
-});
+      // Add an event listener to hide the form and show the Update button when Cancel is clicked
+      cancelButton.addEventListener("click", () => {
+        updateForm.style.display = "none"; // Hide the form
+        updateButton.style.display = "block"; // Show the Update button
+      });
 
       // Append delete button to the task div
       const deleteButton = document.createElement("button");
@@ -225,3 +225,53 @@ document.addEventListener("submit", async (event) => {
     }
   }
 });
+
+// sign-up and login functionality
+
+document.addEventListener("DOMContentLoaded", () => {
+    const signinForm = document.getElementById("signin-form");
+    const signupForm = document.getElementById("signup-form");
+
+    signinForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(signinForm);
+
+      try {
+        const response = await fetch("/login", {
+          method: "POST",
+          body: formData,
+          credentials: "include", // To include cookies
+        });
+
+        if (response.ok) {
+          window.location.href = "/tasklist"; // Redirect on successful login
+        } else {
+          // Handle login error
+          console.error("Login failed");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    });
+
+    signupForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(signupForm);
+
+      try {
+        const response = await fetch("/signup", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          window.location.href = "/tasklist"; // Redirect on successful signup
+        } else {
+          // Handle signup error
+          console.error("Signup failed");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    });
+  });

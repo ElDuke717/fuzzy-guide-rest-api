@@ -11,6 +11,7 @@
   "author": "Nick Huemmer (nick@nickhuemmer.me)",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "connect-livereload": "^0.6.1",
     "cookie-parser": "^1.4.6",
@@ -19,6 +20,8 @@
     "express-session": "^1.17.3",
     "livereload": "^0.9.3",
     "mongoose": "^7.5.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
   }
 }
