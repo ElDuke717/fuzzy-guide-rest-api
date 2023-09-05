@@ -65,11 +65,15 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
 });
+
 
 app.post(
   "/",
@@ -84,7 +88,7 @@ app.post(
 app.post("/signup", async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("new user", email, password);
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -97,12 +101,19 @@ app.post("/signup", async (req, res) => {
     // Save the user to the database
     await newUser.save();
 
-    // User registration successful
-    return res.status(201).json({ message: "User registered successfully" });
+    // Log in the user programmatically and redirect to tasklist
+    req.login(newUser, function(err) {
+      if (err) {
+        return res.status(500).json({ error: "Error logging in after registration" });
+      }
+      return res.redirect("/tasklist");  // Redirect to tasklist after successful login
+    });
+
   } catch (error) {
     return res.status(500).json({ error: "Error saving user" });
   }
 });
+
 
 const taskController = require("./controllers/taskController");
 
