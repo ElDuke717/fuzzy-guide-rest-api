@@ -18,6 +18,72 @@
   --color-button-text: #fff;
   --color-stroke: #094067;
   --color-tertiary: #ef4565;
+  /* Neutrals */
+  --color-neutral-50: #27241d;
+  --color-neutral-100: #423d33;
+  --color-neutral-200: #504a40;
+  --color-neutral-300: #625d52;
+  --color-neutral-400: #857f72;
+  --color-neutral-500: #a39f93;
+  --color-neutral-600: #b8b2a7;
+  --color-neutral-700: #d3cec4;
+  --color-neutral-800: #e8e6e1;
+  --color-neutral-900: #f5f5f4;
+  /* Primary Cyan*/
+  --color-primary-50: #044e54;
+  --color-primary-100: #0a6c74;
+  --color-primary-200: #0d7f86;
+  --color-primary-300: #14919b;
+  --color-primary-400: #2cb1bc;
+  --color-primary-500: #38bec9;
+  --color-primary-600: #54d1db;
+  --color-primary-700: #87eaf2;
+  --color-primary-800: #b8f8fd;
+  --color-primary-900: #e0fcff;
+  /* Secondary Blue */
+  --color-secondary-50: #003e6b;
+  --color-secondary-100: #0a558c;
+  --color-secondary-200: #0f609b;
+  --color-secondary-300: #186faf;
+  --color-secondary-400: #2680c2;
+  --color-secondary-500: #4098d7;
+  --color-secondary-600: #62b0e8;
+  --color-secondary-700: #84c5f4;
+  --color-secondary-800: #b6e0fe;
+  --color-secondary-900: #dceefb;
+  /* Secondary Red */
+  --color-secondary-red-50: #610404;
+  --color-secondary-red-100: #780a0a;
+  --color-secondary-red-200: #911111;
+  --color-secondary-red-300: #a61b1b;
+  --color-secondary-red-400: #ba2525;
+  --color-secondary-red-500: #d64545;
+  --color-secondary-red-600: #e66a6a;
+  --color-secondary-red-700: #f29b9b;
+  --color-secondary-red-800: #facdcd;
+  --color-secondary-red-900: #ffeeee;
+  /* Secondary Yellow */
+  --color-secondary-yellow-50: #513c06;
+  --color-secondary-yellow-100: #7c5e10;
+  --color-secondary-yellow-200: #a27c1a;
+  --color-secondary-yellow-300: #c99a2e;
+  --color-secondary-yellow-400: #e9b949;
+  --color-secondary-yellow-500: #f7d070;
+  --color-secondary-yellow-600: #f9da8b;
+  --color-secondary-yellow-700: #f8e3a3;
+  --color-secondary-yellow-800: #fcefc7;
+  --color-secondary-yellow-900: #fcfbeb;
+  /* Secondary Teal */
+  --color-secondary-teal-50: #014d40;
+  --color-secondary-teal-100: #0c6b58;
+  --color-secondary-teal-200: #147d64;
+  --color-secondary-teal-300: #199473;
+  --color-secondary-teal-400: #27ab83;
+  --color-secondary-teal-500: #3ebd93;
+  --color-secondary-teal-600: #65d6ad;
+  --color-secondary-teal-700: #8eecd5;
+  --color-secondary-teal-800: #c6f7e2;
+  --color-secondary-teal-900: #effcf6;
 }
 
 body {
