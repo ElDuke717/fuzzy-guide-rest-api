@@ -78,22 +78,26 @@ app.use(flash());
 
 // Configure passport.js to use the local strategy
 passport.use(
-  new LocalStrategy({ passReqToCallback: true }, (username, password, done) => {
-    User.findOne({ email: username }, async (err, user) => {
-      console.log('Inside LocalStrategy callback'); // logging here
-      if (err) return done(err);
-      if (!user) return done(null, false, { message: "Incorrect email." });
+  new LocalStrategy(
+    { username: 'email',
+    passReqToCallback: true },
+    (email, password, done) => {
+      User.findOne({ email: email }, async (err, user) => {
+        console.log("Inside LocalStrategy callback"); // logging here
+        if (err) return done(err);
+        if (!user) return done(null, false, { message: "Incorrect email." });
 
-      // Using the async validatePassword method
-      const isPasswordValid = await user.validatePassword(password);
+        // Using the async validatePassword method
+        const isPasswordValid = await user.validatePassword(password);
 
-      if (!isPasswordValid) {
-        return done(null, false, { message: "Incorrect password." });
-      }
-      console.log('Successful login');
-      return done(null, user);
-    });
-  })
+        if (!isPasswordValid) {
+          return done(null, false, { message: "Incorrect password." });
+        }
+        console.log("Successful login");
+        return done(null, user);
+      });
+    }
+  )
 );
 // passport.js configuration
 app.use(
@@ -121,14 +125,14 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-// app.post(
-//   "/",
-//   passport.authenticate("local", {
-//     successRedirect: "/tasklist",
-//     failureRedirect: "/",
-//     failureFlash: true,
-//   })
-// );
+// Route for existing user login redirect.
+app.post(
+  "/",
+  passport.authenticate("local", {
+    successRedirect: "/tasklist", // Redirect to tasklist on success
+    failureRedirect: "/", // Redirect to root on failure
+  })
+);
 
 // User registration route
 app.post("/signup", async (req, res) => {
@@ -200,15 +204,6 @@ const ensureAuthenticated = (req, res, next) => {
   res.redirect("/"); // Redirect to login if not authenticated
 };
 
-// Route for existing user login redirect.
-app.post(
-  "/",
-  passport.authenticate("local", {
-    successRedirect: "/tasklist", // Redirect to tasklist on success
-    failureRedirect: "/", // Redirect to root on failure
-  })
-);
-
 // serve the tasks view
 app.get("/tasklist", ensureAuthenticated, (req, res) => {
   return res.sendFile(path.join(__dirname + "/../views/tasklist.html"));
@@ -243,6 +238,12 @@ app.put("/tasks/:id", taskController.updateTask, (req, res) => {
 // delete a task
 app.delete("/tasks/:id", taskController.deleteTask, (req, res) => {
   return res.status(200).json(res.locals.task);
+});
+
+// General error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
 });
 
 app.listen(PORT, () => {
