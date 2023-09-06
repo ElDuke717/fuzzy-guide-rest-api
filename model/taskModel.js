@@ -29,6 +29,10 @@ const taskSchema = new mongoose.Schema({
     required: true,
   },
   created_at: { type: Date, default: Date.now },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 });
 
 // Create a model using the schema

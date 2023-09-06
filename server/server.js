@@ -74,7 +74,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-
 app.post(
   "/",
   passport.authenticate("local", {
@@ -102,18 +101,32 @@ app.post("/signup", async (req, res) => {
     await newUser.save();
 
     // Log in the user programmatically and redirect to tasklist
-    req.login(newUser, function(err) {
+    req.login(newUser, function (err) {
       if (err) {
-        return res.status(500).json({ error: "Error logging in after registration" });
+        return res
+          .status(500)
+          .json({ error: "Error logging in after registration" });
       }
-      return res.redirect("/tasklist");  // Redirect to tasklist after successful login
+      return res.redirect("/tasklist"); // Redirect to tasklist after successful login
     });
-
   } catch (error) {
     return res.status(500).json({ error: "Error saving user" });
   }
 });
 
+app.get('/checkUser/:email', async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = await User.findOne({ email: email });
+    if (user) {
+      return res.status(200).json({ exists: true });
+    } else {
+      return res.status(200).json({ exists: false });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 const taskController = require("./controllers/taskController");
 
@@ -146,14 +159,22 @@ app.get("/tasklist", ensureAuthenticated, (req, res) => {
 });
 
 // get all the tasks from the database
-app.get("/tasks", taskController.getAllTasks, (req, res) => {
+app.get("/tasks", ensureAuthenticated, taskController.getAllTasks, (req, res) => {
   return res.status(200).json(res.locals.tasks);
 });
 
 // post a new task
-app.post("/tasks", taskController.createTask, (req, res) => {
-  return res.status(200).json(res.locals.task);
-});
+app.post(
+  "/tasks",
+  ensureAuthenticated,
+  taskController.createTask,
+  (req, res) => {
+    // Before you save a task in your createTask controller,
+    // set the owner field to the logged-in user's id.
+    // For example: newTask.owner = req.user._id;
+    return res.status(200).json(res.locals.task);
+  }
+);
 
 // update a task
 app.put("/tasks/:id", taskController.updateTask, (req, res) => {

@@ -8,6 +8,8 @@ const taskController = {};
 taskController.createTask = async (req, res, next) => {
   console.log("create task");
   try {
+    // add owner to req.body
+    req.body.owner = req.user._id;
     const task = await Task.create(req.body);
     res.locals.task = task;
     next();
@@ -19,7 +21,7 @@ taskController.createTask = async (req, res, next) => {
 // Get all tasks
 taskController.getAllTasks = async (req, res, next) => {
   try {
-    const tasks = await Task.find({});
+    const tasks = await Task.find({ owner : req.user._id});
     res.locals.tasks = tasks;
     next();
   } catch (err) {
