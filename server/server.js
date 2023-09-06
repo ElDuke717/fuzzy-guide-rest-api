@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy; // Import LocalStrategy
 const User = require("../model/userModel"); // Import your User model
@@ -7,14 +8,54 @@ require("dotenv").config();
 
 const flash = require("connect-flash");
 
-console.log("user's model", User);
-
 const bcrypt = require("bcrypt");
 
 const secretKey = process.env.SECRET_KEY;
 
 const app = express();
 const PORT = 3001;
+
+// // Logging Middleware
+// app.use((req, res, next) => {
+//   const now = new Date(Date.now());
+//   const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+//     2,
+//     "0"
+//   )}-${String(now.getDate()).padStart(2, "0")} ${String(
+//     now.getHours()
+//   ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
+//     now.getSeconds()
+//   ).padStart(2, "0")}`;
+//   console.log(`A new request received at ${dateStr}`);
+//   console.log("------ New Request Details ------");
+//   console.log("Timestamp:", dateStr);
+//   console.log("Method:", req.method);
+//   console.log("URL:", req.originalUrl);
+//   console.log("Host:", req.hostname);
+//   // console.log("IP:", req.ip);
+//   // console.log("Protocol:", req.protocol);
+//   // console.log("User-Agent:", req.get("User-Agent"));
+
+//   // Logging Headers
+//   // console.log("Headers:", JSON.stringify(req.headers, null, 2));
+
+//   // Logging Body (for POST/PUT/PATCH methods)
+//   if (req.body) {
+//     console.log("Body:", JSON.stringify(req.body, null, 2));
+//   }
+
+//   // Logging Query Parameters (if any)
+//   if (Object.keys(req.query).length > 0) {
+//     console.log("Query Parameters:", JSON.stringify(req.query, null, 2));
+//   }
+
+//   // Logging Cookies (if any)
+//   if (req.cookies) {
+//     console.log("Cookies:", JSON.stringify(req.cookies, null, 2));
+//   }
+
+//   next();
+// });
 
 // Add live reload
 const livereload = require("livereload");
@@ -38,12 +79,18 @@ app.use(flash());
 // Configure passport.js to use the local strategy
 passport.use(
   new LocalStrategy({ passReqToCallback: true }, (username, password, done) => {
-    User.findOne({ email: username }, (err, user) => {
+    User.findOne({ email: username }, async (err, user) => {
+      console.log('Inside LocalStrategy callback'); // logging here
       if (err) return done(err);
       if (!user) return done(null, false, { message: "Incorrect email." });
-      if (!user.validatePassword(password)) {
+
+      // Using the async validatePassword method
+      const isPasswordValid = await user.validatePassword(password);
+
+      if (!isPasswordValid) {
         return done(null, false, { message: "Incorrect password." });
       }
+      console.log('Successful login');
       return done(null, user);
     });
   })
@@ -74,14 +121,14 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-app.post(
-  "/",
-  passport.authenticate("local", {
-    successRedirect: "/tasklist",
-    failureRedirect: "/",
-    failureFlash: true,
-  })
-);
+// app.post(
+//   "/",
+//   passport.authenticate("local", {
+//     successRedirect: "/tasklist",
+//     failureRedirect: "/",
+//     failureFlash: true,
+//   })
+// );
 
 // User registration route
 app.post("/signup", async (req, res) => {
@@ -114,7 +161,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.get('/checkUser/:email', async (req, res) => {
+app.get("/checkUser/:email", async (req, res) => {
   try {
     const email = req.params.email;
     const user = await User.findOne({ email: email });
@@ -124,7 +171,7 @@ app.get('/checkUser/:email', async (req, res) => {
       return res.status(200).json({ exists: false });
     }
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -153,15 +200,29 @@ const ensureAuthenticated = (req, res, next) => {
   res.redirect("/"); // Redirect to login if not authenticated
 };
 
+// Route for existing user login redirect.
+app.post(
+  "/",
+  passport.authenticate("local", {
+    successRedirect: "/tasklist", // Redirect to tasklist on success
+    failureRedirect: "/", // Redirect to root on failure
+  })
+);
+
 // serve the tasks view
 app.get("/tasklist", ensureAuthenticated, (req, res) => {
   return res.sendFile(path.join(__dirname + "/../views/tasklist.html"));
 });
 
 // get all the tasks from the database
-app.get("/tasks", ensureAuthenticated, taskController.getAllTasks, (req, res) => {
-  return res.status(200).json(res.locals.tasks);
-});
+app.get(
+  "/tasks",
+  ensureAuthenticated,
+  taskController.getAllTasks,
+  (req, res) => {
+    return res.status(200).json(res.locals.tasks);
+  }
+);
 
 // post a new task
 app.post(
@@ -169,9 +230,7 @@ app.post(
   ensureAuthenticated,
   taskController.createTask,
   (req, res) => {
-    // Before you save a task in your createTask controller,
-    // set the owner field to the logged-in user's id.
-    // For example: newTask.owner = req.user._id;
+    // set the owner field to the logged-in user's id newTask.owner = req.user._id;
     return res.status(200).json(res.locals.task);
   }
 );
