@@ -63,38 +63,38 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("An error occurred:", error);
     }
   });
-
+}
   // Sign-in Event Listener
-  signInForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+//   signInForm.addEventListener("submit", async (event) => {
+//     event.preventDefault();
 
-    const formData = new FormData(signInForm); // Use the sign-in form
-    const email = formData.get("username"); // Match the "name" attribute from your HTML
-    const password = formData.get("password"); // Match the "name" attribute from your HTML
+//     const formData = new FormData(signInForm); // Use the sign-in form
+//     const email = formData.get("username"); // Match the "name" attribute from your HTML
+//     const password = formData.get("password"); // Match the "name" attribute from your HTML
 
-    const requestBody = {
-      email: email, // You can also just use 'email' if your server expects 'email' field
-      password: password,
-    };
+//     const requestBody = {
+//       email: email, // You can also just use 'email' if your server expects 'email' field
+//       password: password,
+//     };
 
-    try {
-      const response = await fetch("/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Set the content type to JSON
-        },
-        body: JSON.stringify(requestBody), // Convert the object to JSON
-      });
+//     try {
+//       const response = await fetch("/", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json", // Set the content type to JSON
+//         },
+//         body: JSON.stringify(requestBody), // Convert the object to JSON
+//       });
 
-      if (response.ok) {
-        window.location.href = "/tasklist"; // Redirect on successful sign-in
-        console.log("Sign-in successful");
-      } else {
-        // Handle sign-in error
-        console.error("Sign-in failed");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  });
-});
+//       if (response.ok) {
+//         window.location.href = "/tasklist"; // Redirect on successful sign-in
+//         console.log("Sign-in successful");
+//       } else {
+//         // Handle sign-in error
+//         console.error("Sign-in failed");
+//       }
+//     } catch (error) {
+//       console.error("An error occurred:", error);
+//     }
+//   });
+// });

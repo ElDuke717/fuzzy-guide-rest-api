@@ -79,8 +79,7 @@ app.use(flash());
 // Configure passport.js to use the local strategy
 passport.use(
   new LocalStrategy(
-    { username: 'email',
-    passReqToCallback: true },
+    { username: "email", passReqToCallback: true },
     (email, password, done) => {
       User.findOne({ email: email }, async (err, user) => {
         console.log("Inside LocalStrategy callback"); // logging here
@@ -132,7 +131,7 @@ app.post(
     successRedirect: "/tasklist", // Redirect to tasklist on success
     failureRedirect: "/", // Redirect to root on failure
   })
-);
+  );
 
 // User registration route
 app.post("/signup", async (req, res) => {
